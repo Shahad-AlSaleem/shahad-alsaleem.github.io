@@ -4,6 +4,7 @@
 #  - User page:     https://<user>.github.io/
 #  The deploy workflow overrides this automatically, so you can
 #  leave it as "/" for local dev if you like.
+#
 # ─────────────────────────────────────────────────────────────
 baseURL = "https://YOURUSER.github.io/YOURREPO/"
 languageCode = "en-us"
