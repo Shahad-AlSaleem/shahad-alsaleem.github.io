@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "en" }}" data-theme="dark">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <button class="nav-burger" id="navBurger" aria-label="Open navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+
+  {{- $hasToc := and .IsPage (gt (len .TableOfContents) 60) -}}
+  <div class="layout{{ if $hasToc }} has-toc{{ end }}">
+    {{ partial "sidebar.html" . }}
+
+    <main class="main" id="main">
+      <div class="main-inner">
+        {{ block "main" . }}{{ end }}
+      </div>
+    </main>
+
+    {{ if $hasToc }}
+      <aside class="toc" aria-label="On this page">
+        {{ partial "toc.html" . }}
+      </aside>
+    {{ end }}
+  </div>
+
+  <div class="scrim" id="scrim"></div>
+  {{ partial "scripts.html" . }}
+</body>
+</html>

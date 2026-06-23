@@ -1,0 +1,28 @@
+{{ define "main" }}
+<article class="doc">
+  {{ with .Parent }}{{ if not .IsHome }}
+    <p class="eyebrow"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
+  {{ end }}{{ end }}
+
+  <h1 class="doc-title">{{ .Title }}</h1>
+
+  {{ if or .Params.platform .Params.difficulty .Date }}
+  <div class="doc-meta">
+    {{ with .Params.platform }}<span class="chip chip-platform">{{ . }}</span>{{ end }}
+    {{ with .Params.difficulty }}<span class="chip">{{ . }}</span>{{ end }}
+    {{ with .Params.os }}<span class="chip">{{ . }}</span>{{ end }}
+    {{ if and .Date (eq .Section "blog") }}<span class="chip-date">{{ .Date.Format "02 Jan 2006" }}</span>{{ end }}
+    {{ range .Params.tags }}<span class="chip chip-tag">#{{ . }}</span>{{ end }}
+  </div>
+  {{ end }}
+
+  <div class="doc-body">
+    {{ .Content }}
+  </div>
+
+  <nav class="doc-pager" aria-label="Page navigation">
+    {{ with .PrevInSection }}<a class="pager prev" href="{{ .RelPermalink }}"><span>Previous</span>{{ .LinkTitle }}</a>{{ else }}<span></span>{{ end }}
+    {{ with .NextInSection }}<a class="pager next" href="{{ .RelPermalink }}"><span>Next</span>{{ .LinkTitle }}</a>{{ end }}
+  </nav>
+</article>
+{{ end }}

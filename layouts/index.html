@@ -1,0 +1,70 @@
+{{ define "main" }}
+<div class="home">
+  <header class="hero">
+    <p class="hero-prompt"><span class="mono accent">$</span> <span class="mono">whoami</span></p>
+    <h1 class="hero-name">{{ .Site.Params.author }}</h1>
+    <p class="hero-tag">{{ .Site.Params.tagline }}</p>
+    <div class="hero-body">{{ .Content }}</div>
+
+    {{ with .Site.Params.profiles }}
+    <div class="hero-links">
+      {{ with .github }}<a class="hlink" href="{{ . }}" target="_blank" rel="me noopener">GitHub ↗</a>{{ end }}
+      {{ with .htb }}<a class="hlink" href="{{ . }}" target="_blank" rel="noopener">HackTheBox ↗</a>{{ end }}
+      {{ with .thm }}<a class="hlink" href="{{ . }}" target="_blank" rel="noopener">TryHackMe ↗</a>{{ end }}
+      {{ with .linkedin }}<a class="hlink" href="{{ . }}" target="_blank" rel="me noopener">LinkedIn ↗</a>{{ end }}
+      {{ with .email }}<a class="hlink" href="mailto:{{ . }}">Email ↗</a>{{ end }}
+    </div>
+    {{ end }}
+  </header>
+
+  {{ with .Site.Params.skills }}
+  <div class="skill-row">
+    {{ range . }}<span class="skill-badge">{{ . }}</span>{{ end }}
+  </div>
+  {{ end }}
+
+  {{ $writeups := where .Site.RegularPages "Section" "writeups" }}
+  {{ $featured := where $writeups "Params.featured" true }}
+  {{ if not $featured }}{{ $featured = first 6 $writeups }}{{ end }}
+  {{ with $featured }}
+  <section class="home-section">
+    <div class="home-section-head">
+      <h2>Featured writeups</h2>
+      <a class="see-all" href="{{ "/writeups/" | relURL }}">All writeups →</a>
+    </div>
+    <div class="card-grid">
+      {{ range first 6 . }}
+      <div class="grid-item">
+        {{ if .Params.name }}
+          {{ partial "htb-card.html" (dict
+            "name" .Params.name "os" .Params.os "difficulty" .Params.difficulty
+            "points" .Params.points "release" .Params.release "ip" .Params.ip
+            "avatar" .Params.avatar "link" .RelPermalink "platform" .Params.platform) }}
+        {{ else }}
+          <a class="doc-card" href="{{ .RelPermalink }}"><span class="doc-card-title">{{ .Title }}</span></a>
+        {{ end }}
+      </div>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  {{ $posts := first 4 (where .Site.RegularPages "Section" "blog") }}
+  {{ with $posts }}
+  <section class="home-section">
+    <div class="home-section-head">
+      <h2>From the blog</h2>
+      <a class="see-all" href="{{ "/blog/" | relURL }}">All posts →</a>
+    </div>
+    <ul class="post-list">
+      {{ range . }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        <span class="post-date mono">{{ .Date.Format "02 Jan 2006" }}</span>
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
+</div>
+{{ end }}

@@ -1,0 +1,40 @@
+{{- /*
+  htb-card.html — renders an HTB/THM box card: avatar in a difficulty-colored
+  ring, plus a stats panel (OS / Difficulty / Points / Release / IP).
+  Expects a dict with: name, os, difficulty, points, release, ip, avatar, link, platform
+*/ -}}
+{{- $name := .name -}}
+{{- $os := .os | default "Linux" -}}
+{{- $diff := .difficulty | default "Medium" -}}
+{{- $points := .points -}}
+{{- $release := .release -}}
+{{- $ip := .ip -}}
+{{- $avatar := .avatar -}}
+{{- $link := .link -}}
+{{- $platform := .platform | default "HTB" -}}
+{{- $d := lower $diff -}}
+{{- $diffClass := "medium" -}}
+{{- if or (in $d "very easy") (eq $d "easy") }}{{ $diffClass = "easy" }}{{ end -}}
+{{- if eq $d "medium" }}{{ $diffClass = "medium" }}{{ end -}}
+{{- if eq $d "hard" }}{{ $diffClass = "hard" }}{{ end -}}
+{{- if eq $d "insane" }}{{ $diffClass = "insane" }}{{ end -}}
+
+<div class="htb-card diff-{{ $diffClass }}">
+  <div class="htb-avatar">
+    {{- if $avatar -}}
+      <img src="{{ $avatar | relURL }}" alt="{{ $name }} avatar" loading="lazy" width="120" height="120">
+    {{- else -}}
+      <span class="htb-avatar-fallback">{{ substr $name 0 1 | upper }}</span>
+    {{- end -}}
+  </div>
+  <div class="htb-stats">
+    <p class="htb-name">{{ if $link }}<a href="{{ $link }}">{{ $name }}</a>{{ else }}{{ $name }}{{ end }}</p>
+    <dl>
+      <div class="row"><dt>OS</dt><dd>{{ partial "os-icon.html" $os }}{{ $os }}</dd></div>
+      <div class="row"><dt>Difficulty</dt><dd class="diff-label">{{ $diff }}</dd></div>
+      {{ with $points }}<div class="row"><dt>Points</dt><dd>{{ . }}</dd></div>{{ end }}
+      {{ with $release }}<div class="row"><dt>Release</dt><dd>{{ . }}</dd></div>{{ end }}
+      {{ with $ip }}<div class="row"><dt>IP</dt><dd class="mono">{{ . }}</dd></div>{{ end }}
+    </dl>
+  </div>
+</div>

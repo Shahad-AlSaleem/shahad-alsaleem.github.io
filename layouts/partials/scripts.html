@@ -1,0 +1,2 @@
+{{ $search := resources.Get "js/search.js" | resources.Minify | resources.Fingerprint }}
+<script src="{{ $search.RelPermalink }}" defer></script>

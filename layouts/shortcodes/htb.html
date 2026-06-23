@@ -1,0 +1,12 @@
+{{- /* {{< htb name="Jeeves" os="Windows" difficulty="Medium" points="30" release="11 Nov 2017" ip="10.10.10.63" avatar="/img/htb/jeeves.png" >}} */ -}}
+{{ partial "htb-card.html" (dict
+  "name"       (.Get "name")
+  "os"         (.Get "os")
+  "difficulty" (.Get "difficulty")
+  "points"     (.Get "points")
+  "release"    (.Get "release")
+  "ip"         (.Get "ip")
+  "avatar"     (.Get "avatar")
+  "link"       (.Get "link")
+  "platform"   (.Get "platform")
+) }}

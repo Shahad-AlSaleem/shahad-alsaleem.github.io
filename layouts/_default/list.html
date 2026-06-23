@@ -1,0 +1,46 @@
+{{ define "main" }}
+<div class="doc">
+  {{ with .Parent }}{{ if not .IsHome }}
+    <p class="eyebrow"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
+  {{ end }}{{ end }}
+
+  <h1 class="doc-title">{{ .Title }}</h1>
+
+  {{ with .Content }}<div class="doc-body section-intro">{{ . }}</div>{{ end }}
+
+  {{ $pages := .RegularPages.ByWeight }}
+  {{ if .Params.search }}
+    <div class="filterbar" data-platform-filter>
+      <input type="search" class="grid-search" placeholder="Filter boxes…" aria-label="Filter">
+    </div>
+  {{ end }}
+
+  {{ if $pages }}
+  <div class="card-grid">
+    {{ range $pages }}
+      {{ if .Params.name }}
+        {{/* HTB-style box page */}}
+        <div class="grid-item" data-title="{{ lower .Title }}" data-tags="{{ delimit .Params.tags " " }}">
+          {{ partial "htb-card.html" (dict
+            "name" .Params.name "os" .Params.os "difficulty" .Params.difficulty
+            "points" .Params.points "release" .Params.release "ip" .Params.ip
+            "avatar" .Params.avatar "link" .RelPermalink "platform" .Params.platform) }}
+        </div>
+      {{ else }}
+        {{/* generic doc/post link card */}}
+        <a class="doc-card grid-item" href="{{ .RelPermalink }}" data-title="{{ lower .Title }}" data-tags="{{ delimit .Params.tags " " }}">
+          <span class="doc-card-title">{{ .Title }}</span>
+          {{ with .Summary }}<span class="doc-card-sum">{{ . | plainify | truncate 110 }}</span>{{ end }}
+          <span class="doc-card-meta">
+            {{ with .Params.difficulty }}<span class="chip">{{ . }}</span>{{ end }}
+            {{ if and .Date (eq .Section "blog") }}<span class="chip-date">{{ .Date.Format "02 Jan 2006" }}</span>{{ end }}
+          </span>
+        </a>
+      {{ end }}
+    {{ end }}
+  </div>
+  {{ else if not .Content }}
+    <p class="muted">Nothing here yet. Drop a markdown file in <code>content/{{ .Section }}/</code> to add a page.</p>
+  {{ end }}
+</div>
+{{ end }}

@@ -1,0 +1,80 @@
+{{ define "main" }}
+<div class="doc">
+  {{ with .Parent }}{{ if not .IsHome }}
+    <p class="eyebrow"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
+  {{ end }}{{ end }}
+
+  <h1 class="doc-title">{{ .Title }}</h1>
+  {{ with .Content }}<div class="doc-body section-intro">{{ . }}</div>{{ end }}
+
+  {{ if .Parent.IsHome }}
+    {{/* ── Top-level Writeups hub: aggregate + filter across platforms ── */}}
+    {{ $all := .RegularPagesRecursive }}
+    {{ $tags := slice }}
+    {{ range $all }}{{ range .Params.tags }}{{ $tags = $tags | append (lower .) }}{{ end }}{{ end }}
+    {{ $tags = uniq (sort $tags) }}
+
+    <div class="filterbar" data-writeup-filter>
+      <input type="search" class="grid-search" placeholder="Search by name…" aria-label="Search writeups">
+      <div class="chips" role="group" aria-label="Filter by platform">
+        <button class="filter-chip is-active" data-platform="all">All</button>
+        <button class="filter-chip" data-platform="htb">HTB</button>
+        <button class="filter-chip" data-platform="thm">THM</button>
+        <button class="filter-chip" data-platform="ctf">CTF</button>
+        <button class="filter-chip" data-platform="web">Web &amp; Bug Bounty</button>
+      </div>
+      {{ if $tags }}
+      <div class="chips chips-tags" role="group" aria-label="Filter by tag">
+        {{ range $tags }}<button class="filter-chip tag" data-tag="{{ . }}">#{{ . }}</button>{{ end }}
+      </div>
+      {{ end }}
+    </div>
+
+    <div class="card-grid" id="writeup-grid">
+      {{ range $all.ByWeight }}
+        {{ $plat := lower (.Params.platform | default .Section) }}
+        <div class="grid-item" data-platform="{{ $plat }}" data-title="{{ lower .Title }} {{ lower .Params.name }}" data-tags="{{ delimit (apply .Params.tags "lower" ".") " " }}">
+          {{ if .Params.name }}
+            {{ partial "htb-card.html" (dict
+              "name" .Params.name "os" .Params.os "difficulty" .Params.difficulty
+              "points" .Params.points "release" .Params.release "ip" .Params.ip
+              "avatar" .Params.avatar "link" .RelPermalink "platform" .Params.platform) }}
+          {{ else }}
+            <a class="doc-card" href="{{ .RelPermalink }}">
+              <span class="doc-card-title">{{ .Title }}</span>
+              {{ with .Summary }}<span class="doc-card-sum">{{ . | plainify | truncate 110 }}</span>{{ end }}
+              <span class="doc-card-meta"><span class="chip chip-platform">{{ upper $plat }}</span>{{ with .Params.difficulty }}<span class="chip">{{ . }}</span>{{ end }}</span>
+            </a>
+          {{ end }}
+        </div>
+      {{ end }}
+    </div>
+    <p class="empty-state" id="writeup-empty" hidden>No writeups match those filters.</p>
+
+  {{ else }}
+    {{/* ── Platform subsection (HTB / THM / CTF): card grid ── */}}
+    {{ $pages := .RegularPages.ByWeight }}
+    {{ if $pages }}
+    <div class="card-grid">
+      {{ range $pages }}
+        <div class="grid-item">
+          {{ if .Params.name }}
+            {{ partial "htb-card.html" (dict
+              "name" .Params.name "os" .Params.os "difficulty" .Params.difficulty
+              "points" .Params.points "release" .Params.release "ip" .Params.ip
+              "avatar" .Params.avatar "link" .RelPermalink "platform" .Params.platform) }}
+          {{ else }}
+            <a class="doc-card" href="{{ .RelPermalink }}">
+              <span class="doc-card-title">{{ .Title }}</span>
+              {{ with .Summary }}<span class="doc-card-sum">{{ . | plainify | truncate 110 }}</span>{{ end }}
+            </a>
+          {{ end }}
+        </div>
+      {{ end }}
+    </div>
+    {{ else }}
+      <p class="muted">No writeups yet. Add markdown files in <code>content/writeups/{{ .Section }}/</code>.</p>
+    {{ end }}
+  {{ end }}
+</div>
+{{ end }}

@@ -1,0 +1,37 @@
+<nav class="sidebar" id="sidebar" aria-label="Site navigation">
+  <div class="sidebar-top">
+    <a class="brand" href="{{ "/" | relURL }}">
+      <span class="brand-mark">~/</span>
+      <span class="brand-name">{{ .Site.Params.author | default .Site.Title }}</span>
+    </a>
+    <p class="brand-tag">{{ .Site.Params.tagline }}</p>
+
+    <div class="search" >
+      <input type="search" id="search-input" class="search-input"
+             placeholder="Search writeups…" autocomplete="off" spellcheck="false"
+             data-index="{{ "index.json" | relURL }}" aria-label="Search">
+      <div class="search-results" id="search-results" hidden></div>
+    </div>
+  </div>
+
+  <div class="nav-scroll">
+    <ul class="nav-list nav-root">
+      <li>
+        <a class="nav-link{{ if .IsHome }} active{{ end }}" href="{{ "/" | relURL }}">Home</a>
+      </li>
+      {{ partial "menu-tree.html" (dict "section" .Site.Home "current" .) }}
+    </ul>
+  </div>
+
+  <div class="sidebar-foot">
+    {{ with .Site.Params.profiles }}
+    <div class="profiles">
+      {{ with .github }}<a href="{{ . }}" title="GitHub" target="_blank" rel="me noopener">GitHub</a>{{ end }}
+      {{ with .htb }}<a href="{{ . }}" title="HackTheBox" target="_blank" rel="noopener">HTB</a>{{ end }}
+      {{ with .thm }}<a href="{{ . }}" title="TryHackMe" target="_blank" rel="noopener">THM</a>{{ end }}
+      {{ with .linkedin }}<a href="{{ . }}" title="LinkedIn" target="_blank" rel="me noopener">LinkedIn</a>{{ end }}
+      {{ with .twitter }}<a href="{{ . }}" title="X / Twitter" target="_blank" rel="me noopener">X</a>{{ end }}
+    </div>
+    {{ end }}
+  </div>
+</nav>

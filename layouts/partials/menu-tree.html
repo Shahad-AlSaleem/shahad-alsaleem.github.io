@@ -1,0 +1,27 @@
+{{- $current := .current -}}
+{{- $section := .section -}}
+{{- $subsections := $section.Sections.ByWeight -}}
+{{- $pages := $section.RegularPages.ByWeight -}}
+
+{{- range $subsections -}}
+  {{- $isAncestor := or ($current.IsDescendant .) (eq $current .) -}}
+  <li class="nav-group{{ if $isAncestor }} is-open{{ end }}">
+    <div class="nav-group-head">
+      <a class="nav-link nav-group-link{{ if eq $current . }} active{{ end }}" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      <button class="nav-toggle" aria-label="Toggle section" aria-expanded="{{ if $isAncestor }}true{{ else }}false{{ end }}">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="nav-children">
+      <ul class="nav-list">
+        {{ partial "menu-tree.html" (dict "section" . "current" $current) }}
+      </ul>
+    </div>
+  </li>
+{{- end -}}
+
+{{- range $pages -}}
+  <li>
+    <a class="nav-link{{ if eq $current . }} active{{ end }}" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+  </li>
+{{- end -}}

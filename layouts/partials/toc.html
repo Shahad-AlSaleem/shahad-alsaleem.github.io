@@ -1,0 +1,6 @@
+{{- if and .IsPage (gt (len .TableOfContents) 60) -}}
+  <div class="toc-inner">
+    <p class="toc-title">On this page</p>
+    {{ .TableOfContents }}
+  </div>
+{{- end -}}
