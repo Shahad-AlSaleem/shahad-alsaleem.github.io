@@ -1,0 +1,20 @@
+{{- $writeups := site.GetPage "/writeups" -}}
+<nav class="sidebar" id="sidebar" aria-label="Writeups navigation">
+  <div class="sidebar-top">
+    <div class="search">
+      <input type="search" id="search-input" class="search-input"
+             placeholder="Search writeups…" autocomplete="off" spellcheck="false"
+             data-index="{{ "index.json" | relURL }}" aria-label="Search">
+      <div class="search-results" id="search-results" hidden></div>
+    </div>
+  </div>
+
+  <div class="nav-scroll">
+    <p class="nav-section-title">Writeups</p>
+    <ul class="nav-list nav-root">
+      {{ if $writeups }}
+        {{ partial "menu-tree.html" (dict "section" $writeups "current" .) }}
+      {{ end }}
+    </ul>
+  </div>
+</nav>
