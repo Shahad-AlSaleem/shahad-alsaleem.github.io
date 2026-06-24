@@ -1,0 +1,24 @@
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="{{ "/" | relURL }}">
+      <span class="brand-mark">~/</span>
+      <span class="brand-name">{{ .Site.Params.author | default .Site.Title }}</span>
+    </a>
+
+    <nav class="topnav" aria-label="Main navigation">
+      <a class="topnav-link{{ if .IsHome }} active{{ end }}" href="{{ "/" | relURL }}">Home</a>
+      {{ range .Site.Home.Sections.ByWeight }}
+        <a class="topnav-link{{ if eq $.Section .Section }} active{{ end }}" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      {{ end }}
+    </nav>
+
+    {{ with .Site.Params.profiles }}
+    <div class="topbar-profiles">
+      {{ with .github }}<a href="{{ . }}" target="_blank" rel="me noopener">GitHub</a>{{ end }}
+      {{ with .htb }}<a href="{{ . }}" target="_blank" rel="noopener">HTB</a>{{ end }}
+      {{ with .thm }}<a href="{{ . }}" target="_blank" rel="noopener">THM</a>{{ end }}
+      {{ with .linkedin }}<a href="{{ . }}" target="_blank" rel="me noopener">LinkedIn</a>{{ end }}
+    </div>
+    {{ end }}
+  </div>
+</header>
