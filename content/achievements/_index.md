@@ -6,13 +6,13 @@ description: "Certifications, experience, community work and technical skills."
 
 ## Certifications
 
-- **eWPTXv2** — Web Application Penetration Tester Extreme · eLearnSecurity
-- **BTL1** — Blue Team Level 1 · Security Blue Team
-- **eWPTv2** — Web Application Penetration Tester · eLearnSecurity
-- **eCPPTv2** — Certified Professional Penetration Tester · eLearnSecurity
-- **eJPT** — Junior Penetration Tester · eLearnSecurity
-- **CCNA** — Cisco Certified Network Associate · Cisco
-- **Security+** · CompTIA
+- **eWPTXv2** | Web Application Penetration Tester Extreme · eLearnSecurity
+- **BTL1** | Blue Team Level 1 · Security Blue Team
+- **eWPTv2** | Web Application Penetration Tester · eLearnSecurity
+- **eCPPTv2** | Certified Professional Penetration Tester · eLearnSecurity
+- **eJPT** | Junior Penetration Tester · eLearnSecurity
+- **CCNA** | Cisco Certified Network Associate · Cisco
+- **Security+** | CompTIA
 
 ## Experience
 
