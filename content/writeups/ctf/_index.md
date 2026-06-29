@@ -1,6 +1,6 @@
 ---
 title: "CTF"
-weight: 3
+weight: 4
 description: "Capture-the-flag challenge writeups."
 ---
 
