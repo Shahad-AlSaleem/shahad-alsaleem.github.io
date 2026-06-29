@@ -1,6 +1,6 @@
 ---
 title: "Web & Bug Bounty"
-weight: 4
+weight: 5
 description: "Web application findings, bug bounty reports, and exploitation writeups."
 ---
 
