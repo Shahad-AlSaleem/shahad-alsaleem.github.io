@@ -11,7 +11,7 @@ Today I work across vulnerability assessment and penetration testing: networks, 
 I'm also the founder of CyberShe, the largest women's cybersecurity community in the Middle East.
 
 
-This site is my public notebook: HTB, THM, CTF, and web / bug-bounty writeups, plus my certifications and notes.
+This site is my public notebook: HTB, THM, , PG Practice (Offsec), CTF, and web / bug-bounty writeups, plus my certifications and notes.
 
 
 > Browse the [writeups](/writeups/), or check out my [achievements](/achievements/).
