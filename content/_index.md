@@ -2,7 +2,7 @@
 title: "Home"
 ---
 
-I started in biochemistry — then pivoted into offensive security, and never looked back.
+I started in biochemistry,  then pivoted into offensive security, and never looked back.
 
 Today I work across vulnerability assessment and penetration testing: networks, web applications, APIs, and cloud, following OWASP, NIST, and NCA ECC frameworks. I've validated findings and prioritized risk using Qualys and Tenable, and I've trained others on penetration testing at Tuwaiq Academy and Tamkeen Journy.
 
