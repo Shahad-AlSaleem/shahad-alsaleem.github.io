@@ -1,23 +1,16 @@
 # ─────────────────────────────────────────────────────────────
-#  Site config.  IMPORTANT: set baseURL to your GitHub Pages URL.
-#  - Project page:  https://<user>.github.io/<repo>/   (keep trailing slash)
-#  - User page:     https://<user>.github.io/
-#  The deploy workflow overrides this automatically, so you can
-#  leave it as "/" for local dev if you like.
-#
-# ─────────────────────────────────────────────────────────────
-baseURL = "https://YOURUSER.github.io/YOURREPO/"
+# baseURL = "https://YOURUSER.github.io/YOURREPO/"
 languageCode = "en-us"
 title = "Shahad Al-Saleem // Security Writeups"
 enableGitInfo = false
-enableRobotsTXT = true
+enableRobotsTXT = false
 
-# Pretty URLs without ugly index.html, and a JSON search index on the home page
+# a JSON search index on the home page
 [outputs]
   home = ["HTML", "RSS", "JSON"]
 
 [params]
-  # Edit these — they show up in the sidebar footer and the home page.
+  # My Accounts
   author      = "Shahad Al-Saleem"
   tagline     = "Information Security Specialist · Penetration Tester"
   description = "Penetration testing & security writeups — HTB, THM, CTF, web & bug bounty, plus certifications and notes."
@@ -25,12 +18,12 @@ enableRobotsTXT = true
   skills = ["Python", "Bash", "Burp Suite", "Nmap", "Metasploit", "Wireshark", "OWASP", "Qualys", "Tenable"]
   # Profile links shown on the home page and sidebar. Delete any you don't use.
   [params.profiles]
-    github      = "https://github.com/Shahad-AlSaleem"
+#    github      = "https://github.com/0xClk"
     htb         = "https://app.hackthebox.com/profile/000000"
-    thm         = "https://tryhackme.com/p/YOURUSER"
-    linkedin    = "https://www.linkedin.com/in/YOURUSER"
-    twitter     = ""
-    email       = ""
+#    thm         = "https://tryhackme.com/p/YOURUSER"
+    linkedin    = "https://www.linkedin.com/in/shahad-al-saleem"
+    twitter     = "https://x.com/0xClk"
+    email       = "shahadalsaleem8@gmail.com"
 
 [markup]
   [markup.highlight]
@@ -40,13 +33,13 @@ enableRobotsTXT = true
     tabWidth  = 2
     guessSyntax = true
   [markup.goldmark.renderer]
-    unsafe = true            # allow raw HTML in markdown (needed for some writeup formatting)
+    unsafe = true           
   [markup.tableOfContents]
     startLevel = 2
     endLevel   = 4
     ordered    = false
 
-# Top-level navigation order (sections are auto-discovered from content/)
+# Top-level navigation order 
 [[menu.main]]
   name   = "Home"
   url    = "/"
