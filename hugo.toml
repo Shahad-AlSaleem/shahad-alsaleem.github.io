@@ -19,7 +19,7 @@ enableRobotsTXT = false
   # Profile links shown on the home page and sidebar. Delete any you don't use.
   [params.profiles]
 #    github      = "https://github.com/0xClk"
-    htb         = "https://app.hackthebox.com/profile/000000"
+    htb         = "https://app.hackthebox.com/users/2477006"
 #    thm         = "https://tryhackme.com/p/YOURUSER"
     linkedin    = "https://www.linkedin.com/in/shahad-al-saleem"
     twitter     = "https://x.com/0xClk"
