@@ -44,3 +44,18 @@ enableRobotsTXT = false
   name   = "Home"
   url    = "/"
   weight = 1
+
+
+
+[[params.highlights]]
+    value = "7"
+    label = "Certifications"
+  [[params.highlights]]
+    value = "Founder"
+    label = "CyberShe"
+  [[params.highlights]]
+    value = "3"
+    label = "Security Roles"
+  [[params.highlights]]
+    value = "21-Flag"
+    label = "OSINT CTF Designed"
