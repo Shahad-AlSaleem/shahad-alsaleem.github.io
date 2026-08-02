@@ -27,6 +27,7 @@ Start with a quick default scan by nmap.
 
 ```
 PORT      STATE SERVICE
+80/tcp    open  http
 135/tcp   open  msrpc
 139/tcp   open  netbios-ssn
 445/tcp   open  microsoft-ds
@@ -45,7 +46,7 @@ SMB reveals an old Windows 7 build and the hostname, `KEVIN`.
 
 ```
 PORT      STATE  SERVICE       VERSION
-80/tcp    closed http
+80/tcp    open  http           GoAhead WebServer
 135/tcp   open   msrpc         Microsoft Windows RPC
 139/tcp   open   netbios-ssn   Microsoft Windows netbios-ssn
 445/tcp   open   microsoft-ds  Windows 7 Ultimate N 7600 microsoft-ds (workgroup: WORKGROUP)
