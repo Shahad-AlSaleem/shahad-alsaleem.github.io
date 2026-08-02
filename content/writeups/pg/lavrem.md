@@ -19,7 +19,7 @@ description: "Easy Linux box. A misconfigured Gerapy crawler manager, a hidden D
 
 ## Reconnaissance
 
-Start with a quick default scan to see what's exposed, then a deeper service scan on whatever comes back.
+Start with a quick default scan by nmap.
 
 ```
 (root㉿kali)# nmap 192.168.171.24
@@ -50,13 +50,11 @@ PORT     STATE SERVICE VERSION
 
 ## Enumeration
 
-Gerapy has its own frontend login at `/#/login`. Default credentials (`admin:admin`) and a basic SQLi bypass attempt (`admin'+OR+'1'='1#`) both fail here, this particular login form is doing its job.
+Gerapy login page. Default credentials (`admin:admin`) and a basic SQLi bypass attempt (`admin'+OR+'1'='1#`) both fail here.
 
 ![Gerapy frontend login rejecting default creds](/img/pg/lavrem/01-gerapy-login.png)
 
-{{< note tip >}}
-A failed login on the obvious login page doesn't mean the box is locked down. Always fuzz for other endpoints before assuming credentials are the wrong path entirely.
-{{< /note >}}
+Fuzzing to find other endpoints.
 
 ```
 (root㉿kali)# ffuf -u "http://192.168.171.24:8000/FUZZ" \
@@ -67,7 +65,8 @@ A failed login on the obvious login page doesn't mean the box is locked down. Al
 admin                   [Status: 301, Size: 0, Words: 1, Lines: 1, Duration: 102ms]
 ```
 
-That `/admin` path turns out to be a completely separate surface, Django's own auto-generated admin panel, distinct from Gerapy's custom frontend. And this time, `admin:admin` logs straight in.
+That `/admin` path is actually Django's built-in admin panel, separate from Gerapy's frontend, and `admin:admin` logs right in.
+
 
 ![Django admin login accepting default credentials](/img/pg/lavrem/02-django-admin-login.png)
 
@@ -77,7 +76,7 @@ Inside the Django admin panel, **Authentication and Authorization → Users** is
 
 ![Django admin dashboard with the Users section highlighted](/img/pg/lavrem/03-django-admin-panel.png)
 
-Rather than looking for an exploit right away, the fastest move is to just use the panel's own functionality: add a new user, then flip the **Superuser status** checkbox.
+Rather than hunting for an exploit, the fastest route is using the panel's own features, create a new user, then check the **Superuser status** box.
 
 ```
 Username: admin2
@@ -88,9 +87,7 @@ Password: complex_pass123
 
 ![Ticking the Superuser status checkbox to grant full privileges](/img/pg/lavrem/05-superuser-status.png)
 
-No exploit needed for this step, just a legitimate admin feature abused to guarantee a fully privileged account to work with.
-
-With a confirmed superuser account in hand, the next question is whether Gerapy itself has a known vulnerability.
+With superuser access secured, the next question becomes whether Gerapy itself has a known vulnerability to exploit.
 
 ```
 (root㉿kali)# searchsploit gerapy
@@ -135,7 +132,7 @@ app@ubuntu$ cat local.txt
 
 ## Privilege Escalation
 
-With a foothold established, checking capabilities is worth doing early. It's an easy thing to skip if you only run a SUID scan.
+Checking capabilities.
 
 ```
 app@ubuntu$ getcap -r / 2>/dev/null
