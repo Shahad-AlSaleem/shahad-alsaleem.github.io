@@ -58,8 +58,6 @@ Host script results:
 |_  Workgroup: WORKGROUP
 ```
 
-Nmap flags port 80 as closed here, but browsing to it directly works fine, likely a filtering quirk on the scan rather than the port actually being closed.
-
 ## Enumeration
 
 ```
