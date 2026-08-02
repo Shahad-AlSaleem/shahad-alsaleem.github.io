@@ -167,6 +167,6 @@ root@ubuntu# cat proof.txt
 
 ## Lessons learned
 
-- Fuzz even after a login form rejects creds. Django's `/admin` was a completely separate, unprotected surface right next to a hardened custom login.
-- Built-in admin panels with "add user" features are free privesc. No CVE needed to go from any logged-in account to superuser.
-- Run `getcap -r /` alongside every SUID check, not after. This box's entire path to root was invisible to `find / -perm -4000` alone.
+- If a login page doesn't fall to default creds or a quick SQLi bypass, that's not a dead end. It's a signal to enumerate harder and rethink the surface instead of accepting the form at face value.
+- The real skill is connecting services, not treating them in isolation. Django's admin panel wasn't the target itself, it was the tool that produced the credential Gerapy's RCE needed.
+- Privesc doesn't always need LinPEAS or linenum. Start with the cheap checks, getcap -r / right alongside the SUID scan, and you'll often find the answer before running anything heavy.
