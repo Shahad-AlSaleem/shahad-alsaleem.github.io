@@ -52,6 +52,8 @@ PORT     STATE SERVICE VERSION
 
 Gerapy has its own frontend login at `/#/login`. Default credentials (`admin:admin`) and a basic SQLi bypass attempt (`admin'+OR+'1'='1#`) both fail here — this particular login form is doing its job.
 
+![Gerapy frontend login rejecting default creds](/img/pg/lavrem/01-gerapy-login.png)
+
 {{< note tip >}}
 A failed login on the *obvious* login page doesn't mean the box is locked down — always fuzz for other endpoints before assuming credentials are the wrong path entirely.
 {{< /note >}}
@@ -67,15 +69,24 @@ admin                   [Status: 301, Size: 0, Words: 1, Lines: 1, Duration: 102
 
 That `/admin` path turns out to be a completely separate surface — Django's own auto-generated admin panel, distinct from Gerapy's custom frontend. And this time, `admin:admin` logs straight in.
 
+![Django admin login accepting default credentials](/img/pg/lavrem/02-django-admin-login.png)
+
 ## Initial Foothold
 
-Inside the Django admin panel, **Authentication and Authorization → Users** is directly accessible. Rather than looking for an exploit right away, the fastest move is to just use the panel's own functionality: add a new user, then flip the **Superuser status** checkbox.
+Inside the Django admin panel, **Authentication and Authorization → Users** is directly accessible.
+
+![Django admin dashboard with the Users section highlighted](/img/pg/lavrem/03-django-admin-panel.png)
+
+Rather than looking for an exploit right away, the fastest move is to just use the panel's own functionality: add a new user, then flip the **Superuser status** checkbox.
 
 ```
 Username: admin2
 Password: complex_pass123
-[x] Superuser status
 ```
+
+![Adding a new admin2 user via the Django admin panel](/img/pg/lavrem/04-add-user.png)
+
+![Ticking the Superuser status checkbox to grant full privileges](/img/pg/lavrem/05-superuser-status.png)
 
 No exploit needed for this step — just a legitimate admin feature, abused to guarantee a fully-privileged account to work with.
 
