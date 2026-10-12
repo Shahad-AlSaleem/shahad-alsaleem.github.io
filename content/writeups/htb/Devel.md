@@ -66,7 +66,7 @@ ftp> ls
 03-17-17  05:37PM               184946 welcome.png
 ```
 
-Anonymous FTP is not just readable — it's **writable**, and the FTP root maps directly onto the IIS webroot. Anything uploaded here becomes instantly reachable over HTTP.
+Anonymous FTP is not just readable, it's **writable**, and the FTP root maps directly onto the IIS webroot. Anything uploaded here becomes instantly reachable over HTTP.
 
 ## Initial Foothold
 
@@ -87,7 +87,7 @@ listening on [any] 443 ...
 connect to [10.10.15.249] from (UNKNOWN) [10.129.30.84] 49203
 ```
 
-A single `curl` request is enough to trigger it — IIS executes the ASPX page and the reverse shell fires back immediately.
+A single `curl` request is enough to trigger it, IIS executes the ASPX page and the reverse shell fires back immediately.
 
 ## Privilege Escalation
 
@@ -108,7 +108,7 @@ SeImpersonatePrivilege        Impersonate a client after authentication Enabled
 SeCreateGlobalPrivilege       Create global objects                     Enabled 
 ```
 
-`SeImpersonatePrivilege` is **Enabled** for the IIS app pool identity — the classic trigger for the "Potato family" of privilege escalation tools.
+`SeImpersonatePrivilege` is **Enabled** for the IIS app pool identity, the classic trigger for the "Potato family" of privilege escalation tools.
 
 Before picking a tool, enumerate the OS so the right build and architecture get chosen:
 
@@ -126,8 +126,8 @@ Hotfix(s):                 N/A
 
 Two details from `systeminfo` drive the whole approach:
 
-- **`System Type: X86-based PC`** — the OS is 32-bit, not x64. This is what decides *which* JuicyPotato binary to use: on a 32-bit OS the correct build is **`Juicy.Potato.x86.exe`**. Handing the loader an x64 binary on a 32-bit system fails with `The system cannot execute the specified program` — a loader error, not an exploitation failure.
-- **`Hotfix(s): N/A`** — an unpatched Windows 7 (Build 7600) with no KBs installed. Combined with `SeImpersonatePrivilege`, [JuicyPotato](https://github.com/ohpe/juicy-potato) is a direct, low-noise path to SYSTEM.
+- **`System Type: X86-based PC`**, the OS is 32-bit, not x64. This is what decides *which* JuicyPotato binary to use: on a 32-bit OS the correct build is **`Juicy.Potato.x86.exe`**. Handing the loader an x64 binary on a 32-bit system fails with `The system cannot execute the specified program`, a loader error, not an exploitation failure.
+- **`Hotfix(s): N/A`**, an unpatched Windows 7 (Build 7600) with no KBs installed. Combined with `SeImpersonatePrivilege`, [JuicyPotato](https://github.com/ohpe/juicy-potato) is a direct, low-noise path to SYSTEM.
 
 Transfer the **x86** JuicyPotato binary and netcat to the target:
 
@@ -155,7 +155,7 @@ HKEY_CLASSES_ROOT\CLSID\{C97FCC79-E628-407D-AE68-A06AD6D8B4D1}\LocalService
 End of search: 3 match(es) found.
 ```
 
-This confirms locally-registered candidates. The most reliable reference is the per-OS [CLSID list](https://github.com/ohpe/juicy-potato/tree/master/CLSID) in the JuicyPotato repo — each Windows version has a CLSID known to activate as SYSTEM. For Windows 7 we pick a working CLSID and pass it with `-c`. If the first candidate doesn't yield a SYSTEM token, try the next from the list — not every CLSID activates on every build.
+This confirms locally-registered candidates. The most reliable reference is the per-OS [CLSID list](https://github.com/ohpe/juicy-potato/tree/master/CLSID) in the JuicyPotato repo, each Windows version has a CLSID known to activate as SYSTEM. For Windows 7 we pick a working CLSID and pass it with `-c`. If the first candidate doesn't yield a SYSTEM token, try the next from the list, not every CLSID activates on every build.
 
 ### Getting SYSTEM
 
@@ -188,8 +188,8 @@ ab18e7b8b9048f35e82e37484691abd7
 
 ## Lessons learned
 
-- Nmap flagging a CVE doesn't mean it's the intended path — MS15-034 was a red herring here; anonymous FTP with write access was the actual way in.
+- Nmap flagging a CVE doesn't mean it's the intended path, MS15-034 was a red herring here; anonymous FTP with write access was the actual way in.
 - Anonymous FTP being *readable* is common and often boring; always check whether it's also **writable** before moving on, especially when the FTP root and web root look like they might overlap.
-- `SeImpersonatePrivilege` enabled on a service account is one of the highest-value findings in a Windows `whoami /all` output — it almost always means Potato-family tools will get you to SYSTEM.
-- **Read `systeminfo` before choosing a tool.** `System Type` decides x86 vs x64 — a mismatch produces the misleading "cannot execute the specified program" error rather than an exploitation failure. `Hotfix(s)` and the OS build tell you whether token impersonation (quiet) or a kernel exploit (noisy) fits better.
-- On old, unpatched Windows boxes (Build 7600, no KBs installed), check for the simplest privesc first — a token-impersonation tool is far less noisy than chasing a kernel exploit.
+- `SeImpersonatePrivilege` enabled on a service account is one of the highest-value findings in a Windows `whoami /all` output, it almost always means Potato-family tools will get you to SYSTEM.
+- **Read `systeminfo` before choosing a tool.** `System Type` decides x86 vs x64, a mismatch produces the misleading "cannot execute the specified program" error rather than an exploitation failure. `Hotfix(s)` and the OS build tell you whether token impersonation (quiet) or a kernel exploit (noisy) fits better.
+- On old, unpatched Windows boxes (Build 7600, no KBs installed), check for the simplest privesc first, a token-impersonation tool is far less noisy than chasing a kernel exploit.
